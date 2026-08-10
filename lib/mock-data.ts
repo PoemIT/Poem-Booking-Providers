@@ -1,6 +1,8 @@
 import type {
   Booking,
   DashboardStats,
+  DayAvailability,
+  MonthAvailabilitySummary,
   Notification,
   Room,
   RoomStats,
@@ -261,4 +263,20 @@ export const mockRoomPerformance = {
   bookingsThisMonth: 18,
   revenueThisMonth: 810000,
   occupancyPercent: 80,
+};
+
+export const mockAvailabilityByDay: Record<number, DayAvailability> = {
+  3: { status: "booked", bookedBy: "Jean-Pierre M.", amount: 45000 },
+  4: { status: "booked", bookedBy: "Jean-Pierre M.", amount: 45000 },
+  12: { status: "unavailable" },
+  13: { status: "other" },
+  15: { status: "booked", bookedBy: "Amadou S.", amount: 45000 },
+  16: { status: "booked", bookedBy: "Amadou S.", amount: 45000 },
+};
+
+export const mockAvailabilitySummary: MonthAvailabilitySummary = {
+  availableRooms: "12/15",
+  bookedNightsLabel: "4 nights (2 bookings)",
+  blockedNightsLabel: "2 nights",
+  occupancyRatePercent: 13.3,
 };

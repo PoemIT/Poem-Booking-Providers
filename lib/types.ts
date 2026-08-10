@@ -72,3 +72,24 @@ export type VerificationDocument = {
   uploadedDate: string | null; // null when nothing has been uploaded yet
   status: DocumentStatus;
 };
+
+export type DayAvailabilityStatus =
+  | "available"
+  | "booked"
+  | "unavailable"
+  | "other";
+
+export type DayAvailability = {
+  status: DayAvailabilityStatus;
+  availableCount?: number; // e.g. 12 (out of totalUnits)
+  totalCount?: number;
+  bookedBy?: string;
+  amount?: number;
+};
+
+export type MonthAvailabilitySummary = {
+  availableRooms: string; // e.g. "12/15"
+  bookedNightsLabel: string; // e.g. "4 nights (2 bookings)"
+  blockedNightsLabel: string; // e.g. "2 nights"
+  occupancyRatePercent: number;
+};
