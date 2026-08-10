@@ -1,7 +1,12 @@
 import { mockProfileDetails } from "@/lib/mock-data";
 import React from "react";
 
-const photos = ["./hotel1.jfif", "./hotel2.jfif"];
+const photos = [
+  "./hotel1.jfif",
+  "./hotel2.jfif",
+  "./hotel2.jfif",
+  "./hotel2.jfif",
+];
 
 const details = mockProfileDetails;
 
@@ -19,14 +24,15 @@ function ProfileCard() {
         {/* Left column */}
         <div className="flex-1">
           {/* Photo gallery */}
+
           <div className="mb-6 grid grid-cols-5 gap-3">
             {photos.map((i) => (
               <div
                 key={i}
-                className="h-24 w-36 shrink-0 overflow-hidden rounded-lg border-2 border-amber-500/70 bg-gradient-to-br from-slate-800 via-slate-700 to-amber-900"
+                className="h-24 w-36 shrink-0 overflow-hidden rounded-lg border-2 border-amber-500 "
               >
                 <div className="flex h-full w-full items-center justify-center">
-                  <img src={i} alt="profile" />
+                  <img src={i} alt="profile" className="h-full w-full" />
                 </div>
               </div>
             ))}

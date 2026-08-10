@@ -18,6 +18,8 @@ import {
   ShieldCheck,
   Search,
   Bell,
+  House,
+  Plus,
   ChevronDown,
   type LucideIcon,
 } from "lucide-react";
@@ -42,6 +44,8 @@ export const iconMap = {
   ShieldCheck,
   Search,
   Bell,
+  Plus,
+  House,
   ChevronDown,
 } satisfies Record<string, LucideIcon>;
 

@@ -6,6 +6,7 @@ import {
   typeSection,
   ProviderType,
   homeLink,
+  NavItem,
 } from "@/lib/navconfig";
 import { NavLink } from "./NavLink";
 import { LogOut } from "lucide-react";
@@ -14,8 +15,29 @@ type SidebarProps = {
   providerType: ProviderType; // "hotel" | "apartment" | "bus" — comes from whoever is logged in
 };
 
+// Every route now lives under /hotel/..., /apartment/..., etc.
+// navConfig.ts keeps its hrefs simple (e.g. "/dashboard"), and THIS
+// function is the one place that adds the provider-type prefix on top
+// of it (e.g. "/dashboard" -> "/hotel/dashboard").
+function withProviderPrefix(
+  providerType: ProviderType,
+  items: NavItem[],
+): NavItem[] {
+  return items.map((item) => ({
+    ...item,
+    href: `/${providerType}${item.href}`,
+  }));
+}
+
 export function Sidebar({ providerType }: SidebarProps) {
-  const typeSpecificLinks = typeSection[providerType].items;
+  const homeLinks = withProviderPrefix(providerType, homeLink);
+  const businessLinks = withProviderPrefix(providerType, businessSection);
+  const typeSpecificLinks = withProviderPrefix(
+    providerType,
+    typeSection[providerType].items,
+  );
+  const bookingsLinks = withProviderPrefix(providerType, bookingsSection);
+  const financeLinks = withProviderPrefix(providerType, financeSection);
 
   function handleLogout() {
     // TODO: replace with real logout logic once auth exists
@@ -35,7 +57,7 @@ export function Sidebar({ providerType }: SidebarProps) {
 
         <div className="flex flex-col gap-1 px-3">
           {/* Links every provider sees, regardless of type */}
-          {homeLink.map((item) => (
+          {homeLinks.map((item) => (
             <NavLink key={item.href} {...item} />
           ))}
         </div>
@@ -45,14 +67,14 @@ export function Sidebar({ providerType }: SidebarProps) {
 
         <div className="flex flex-col gap-1 px-3">
           {/* Links every provider sees, regardless of type */}
-          {businessSection.map((item) => (
+          {businessLinks.map((item) => (
             <NavLink key={item.href} {...item} />
           ))}
         </div>
 
         {/* Only the section matching this provider's type */}
         <p className="mb-1 mt-5 px-5 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-          {providerType}
+          {typeSection[providerType].label}
         </p>
         <div className="flex flex-col gap-1 px-3">
           {typeSpecificLinks.map((item) => (
@@ -64,7 +86,7 @@ export function Sidebar({ providerType }: SidebarProps) {
           Bookings
         </p>
         <div className="flex flex-col gap-1 px-3">
-          {bookingsSection.map((item) => (
+          {bookingsLinks.map((item) => (
             <NavLink key={item.href} {...item} />
           ))}
         </div>
@@ -72,7 +94,7 @@ export function Sidebar({ providerType }: SidebarProps) {
           General
         </p>
         <div className="flex flex-col gap-1 px-3">
-          {financeSection.map((item) => (
+          {financeLinks.map((item) => (
             <NavLink key={item.href} {...item} />
           ))}
         </div>

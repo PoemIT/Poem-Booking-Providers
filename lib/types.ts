@@ -1,4 +1,35 @@
 export type BookingStatus = "confirmed" | "pending" | "completed" | "cancelled";
+export type RoomStatus = "active" | "maintenance" | "inactive";
+
+export type RoomStats = {
+  totalRooms: number;
+  occupiedToday: number;
+  availableNow: number;
+  revenueThisMonth: number;
+};
+
+export type Room = {
+  id: string;
+  name: string;
+  type: string; // e.g. "Deluxe", "Standard", "Executive", "Family"
+  pricePerNight: number;
+  occupied: number;
+  totalUnits: number;
+  status: RoomStatus;
+};
+
+export type RoomDetail = {
+  name: string;
+  description: string;
+  type: string;
+  maxOccupancy: string; // e.g. "2 Adults"
+  bedType: string;
+  location: string;
+  weekendPrice: number;
+  amenities: string; // simple comma-separated text, matching the New Room form
+  status: RoomStatus;
+  photos: string[];
+};
 
 export type Booking = {
   id: string; // string of numbers
@@ -30,4 +61,14 @@ export type Notification = {
   icon: string;
   color: string;
   unread: boolean;
+};
+
+export type DocumentStatus = "verified" | "pending" | "missing";
+
+export type VerificationDocument = {
+  id: string;
+  name: string;
+  type: string; // e.g. "PDF", "Image"
+  uploadedDate: string | null; // null when nothing has been uploaded yet
+  status: DocumentStatus;
 };

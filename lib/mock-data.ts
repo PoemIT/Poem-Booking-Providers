@@ -1,4 +1,11 @@
-import type { Booking, DashboardStats, Notification } from "./types";
+import type {
+  Booking,
+  DashboardStats,
+  Notification,
+  Room,
+  RoomStats,
+  VerificationDocument,
+} from "./types";
 
 export const mockDashboardStats: DashboardStats = {
   todaysBookings: 18,
@@ -10,6 +17,70 @@ export const mockDashboardStats: DashboardStats = {
   pendingRefunds: 2,
   pendingRefundsChangePercent: -1,
 };
+
+export const mockRoomStats: RoomStats = {
+  totalRooms: 24,
+  occupiedToday: 18,
+  availableNow: 6,
+  revenueThisMonth: 810000,
+};
+
+export const mockRooms: Room[] = [
+  {
+    id: "1",
+    name: "Deluxe Suite 204",
+    type: "Deluxe",
+    pricePerNight: 45000,
+    occupied: 12,
+    totalUnits: 15,
+    status: "active",
+  },
+  {
+    id: "2",
+    name: "Standard Room 110",
+    type: "Standard",
+    pricePerNight: 25000,
+    occupied: 3,
+    totalUnits: 10,
+    status: "active",
+  },
+  {
+    id: "3",
+    name: "Executive Suite 301",
+    type: "Executive",
+    pricePerNight: 65000,
+    occupied: 0,
+    totalUnits: 2,
+    status: "maintenance",
+  },
+  {
+    id: "4",
+    name: "Family Room 105",
+    type: "Family",
+    pricePerNight: 38000,
+    occupied: 0,
+    totalUnits: 5,
+    status: "inactive",
+  },
+  {
+    id: "5",
+    name: "Ocean View 402",
+    type: "Deluxe",
+    pricePerNight: 58000,
+    occupied: 4,
+    totalUnits: 6,
+    status: "active",
+  },
+  {
+    id: "6",
+    name: "Single Room 112",
+    type: "Standard",
+    pricePerNight: 20000,
+    occupied: 1,
+    totalUnits: 8,
+    status: "active",
+  },
+];
 
 // Simple wavy numbers just to draw a sparkline — not real historical data.
 export const mockSparklines = {
@@ -142,3 +213,52 @@ export const mockProfileDetails = [
   { label: "Email", value: "contact@hotelcontinental.cm" },
   { label: "Address", value: "Rue de la Joie, Bonanjo, Douala" },
 ];
+
+export const mockVerificationDocuments: VerificationDocument[] = [
+  {
+    id: "1",
+    name: "Business Registration",
+    type: "PDF",
+    uploadedDate: "2026-06-12",
+    status: "verified",
+  },
+  {
+    id: "2",
+    name: "Tax Certificate",
+    type: "PDF",
+    uploadedDate: "2026-06-12",
+    status: "verified",
+  },
+  {
+    id: "3",
+    name: "Owner ID",
+    type: "Image",
+    uploadedDate: "2026-06-10",
+    status: "pending",
+  },
+  {
+    id: "4",
+    name: "Business License",
+    type: "PDF",
+    uploadedDate: null,
+    status: "missing",
+  },
+];
+
+export const mockRoomDetail = {
+  name: "Luxury Apartment",
+  description: "Room details & performance",
+  type: "Apartment",
+  maxOccupancy: "2 Adults",
+  bedType: "King",
+  location: "Bastos, Yaoundé",
+  weekendPrice: 52000,
+  amenities: "WiFi, AC, TV, Minibar",
+  status: "active" as const,
+  photos: ["./next.svg", "./hotel2.jfif", "./hotel1.jfif", ""],
+};
+export const mockRoomPerformance = {
+  bookingsThisMonth: 18,
+  revenueThisMonth: 810000,
+  occupancyPercent: 80,
+};

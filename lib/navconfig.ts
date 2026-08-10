@@ -17,21 +17,22 @@ export const homeLink: NavItem[] = [
   },
 ];
 
-// Section 1: BUSINESS — same for every provider type.
 export const businessSection: NavItem[] = [
   { label: "Profile", href: "/profile", icon: "Users" },
   { label: "Verification", href: "/verification", icon: "ShieldCheck" },
 ];
 
-// Section 2: this is the ONLY part that changes based on provider type.
-// Each key has its own section label + its own links.
 export const typeSection: Record<
   ProviderType,
   { label: string; items: NavItem[] }
 > = {
   hotel: {
     label: "HOTELS",
-    items: [{ label: "Rooms", href: "/rooms", icon: "BedDouble" }],
+    items: [
+      { label: "Rooms", href: "/rooms", icon: "BedDouble" },
+      { label: "Add Room", href: "/rooms/new", icon: "Plus" },
+      { label: "Availability", href: "/availability", icon: "House" },
+    ],
   },
   apartment: {
     label: "APARTMENTS",

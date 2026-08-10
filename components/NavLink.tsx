@@ -1,9 +1,3 @@
-// components/NavLink.tsx
-//
-// One single link in the sidebar. Doesn't know or care whether it's
-// a "hotel" link or a "bookings" link — it just renders whatever
-// label/href/icon it's given, and highlights itself if it's the active page.
-
 "use client";
 
 import Link from "next/link";
@@ -12,11 +6,10 @@ import { iconMap } from "@/lib/icon-map";
 import { NavItem } from "@/lib/navconfig";
 
 export function NavLink({ label, href, icon }: NavItem) {
-  const pathname = usePathname(); // e.g. "/hotel-dashboard/rooms" — the CURRENT url
-  const isActive = pathname === href; // true only if this link IS the current page
+  const pathname = usePathname();
+  const isActive = pathname === href;
 
-  const Icon = iconMap[icon]; // turns "BedDouble" (a string) into the real <BedDouble /> component
-
+  const Icon = iconMap[icon];
   return (
     <Link
       href={href}

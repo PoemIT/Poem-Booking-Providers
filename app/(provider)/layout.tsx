@@ -1,12 +1,3 @@
-// app/(provider)/layout.tsx
-//
-// ONE layout for every page under (provider) — dashboard, rooms,
-// properties, buses, bookings, revenue, everything.
-//
-// TEMPORARY: there's no backend yet, so we're hardcoding a fake provider
-// below. Once the backend exists, delete the mockProvider object and
-// uncomment the real fetch — nothing else in this file needs to change.
-
 import { Sidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
 import type { ProviderType } from "@/lib/navconfig";
