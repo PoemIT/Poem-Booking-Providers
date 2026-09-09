@@ -2,9 +2,11 @@ import type { BookingStatus, RoomStatus } from "@/lib/types";
 
 const statusStyles: Record<BookingStatus, string> = {
   confirmed: "bg-green-50 text-green-700",
-  pending: "bg-orange-50 text-orange-700",
+  pending_payment: "bg-orange-50 text-orange-700",
   completed: "bg-blue-50 text-blue-700",
-  cancelled: "bg-red-50 text-red-700",
+  cancelled: "bg-gray-50 text-gray-700",
+  refunded: "bg-purple-50 text-purple-700",
+  failed: "bg-red-50 text-red-700",
 };
 const roomStatusStyles: Record<RoomStatus, string> = {
   active: "bg-green-50 text-green-700",
@@ -14,16 +16,20 @@ const roomStatusStyles: Record<RoomStatus, string> = {
 
 const statusDotStyle: Record<BookingStatus, string> = {
   confirmed: "bg-green-500",
-  pending: "bg-orange-500",
+  pending_payment: "bg-orange-500",
   completed: "bg-blue-500",
-  cancelled: "bg-red-500",
+  cancelled: "bg-gray-500",
+  refunded: "bg-purple-500",
+  failed: "bg-red-500",
 };
 
 const statusLabels: Record<BookingStatus, string> = {
   confirmed: "Confirmed",
-  pending: "Pending",
+  pending_payment: "Pending",
   completed: "Completed",
   cancelled: "Cancelled",
+  refunded: "Refunded",
+  failed: "Failed",
 };
 const roomStatusLabels: Record<RoomStatus, string> = {
   active: "Active",

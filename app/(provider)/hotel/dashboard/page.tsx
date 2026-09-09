@@ -17,10 +17,10 @@ export default function DashboardPage() {
       <div className="mb-6 flex items-start justify-between">
         <div>
           <h1 className="text-xl font-semibold text-slate-900">
-            Provider Dashboard
+            Long Bridge Hotel Dashboard
           </h1>
           <p className="text-sm text-slate-500">
-            Welcome back, Admin User — here's what's happening today.
+            Welcome back, John Doe — here's what's happening today.
           </p>
         </div>
 

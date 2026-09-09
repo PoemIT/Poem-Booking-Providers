@@ -15,22 +15,18 @@ import {
   User,
   Wallet,
   type LucideIcon,
+  Hotel,
 } from "lucide-react";
 import { formatDate, getAvatarColor, getInitials } from "@/lib/format";
-import type { Booking } from "@/lib/types";
+import type {
+  Booking,
+  BookingItemStatus,
+  BookingStatus,
+  HotelBookingItemWithRelations,
+} from "@/lib/types";
 import { Card } from "../providerui/card";
 import { StatusBadge, StatusBadgeButton } from "../providerui/statusBadge";
 
-const serviceIcons: Record<string, LucideIcon> = {
-  "Hotel Room": BedDouble,
-  "Suite Deluxe": DoorOpen,
-  "Shuttle Bus": Bus,
-  "Airport Transfer": Plane,
-  "Conference Room": Users,
-  "Private Car": Car,
-};
-
-// Which icon to show per payment method.
 const paymentIcons: Record<string, LucideIcon> = {
   "Mobile Money": Smartphone,
   "Orange Money": User,
@@ -39,11 +35,20 @@ const paymentIcons: Record<string, LucideIcon> = {
 };
 
 type BookingsTableProps = {
-  bookings: Booking[];
+  bookings: HotelBookingItemWithRelations[];
   totalCount: number;
 };
 
 export function BookingsTable({ bookings, totalCount }: BookingsTableProps) {
+  const itemStatusToBookingStatus: Record<BookingItemStatus, BookingStatus> = {
+    pending: "pending_payment",
+    confirmed: "confirmed",
+    cancelled: "cancelled",
+    completed: "completed",
+    refunded: "refunded",
+    failed: "failed",
+  };
+
   return (
     <Card className="p-0">
       {/* Header row: title + count badge, then Filter/Sort/Export buttons */}
@@ -78,7 +83,7 @@ export function BookingsTable({ bookings, totalCount }: BookingsTableProps) {
             <tr className="text-left text-xs uppercase tracking-wide text-slate-400">
               <th className="px-5 py-3 font-medium">Booking Ref</th>
               <th className="px-5 py-3 font-medium">Customer Name</th>
-              <th className="px-5 py-3 font-medium">Service</th>
+              <th className="px-5 py-3 font-medium">Room Type</th>
               <th className="px-5 py-3 font-medium">Date</th>
               <th className="px-5 py-3 font-medium">Status</th>
               <th className="px-5 py-3 font-medium">Amount (XAF)</th>
@@ -88,8 +93,8 @@ export function BookingsTable({ bookings, totalCount }: BookingsTableProps) {
           </thead>
           <tbody>
             {bookings.map((booking, i) => {
-              const ServiceIcon = serviceIcons[booking.service] ?? BedDouble;
-              const PaymentIcon = paymentIcons[booking.paymentMethod] ?? Wallet;
+              const PaymentIcon =
+                paymentIcons[booking.payment.payment_method] ?? Wallet;
 
               return (
                 <tr
@@ -97,50 +102,51 @@ export function BookingsTable({ bookings, totalCount }: BookingsTableProps) {
                   className={i % 2 === 1 ? "bg-slate-50/60" : ""}
                 >
                   <td className="px-5 py-3  text-black/80 font-bold">
-                    {booking.bookingRef}
+                    {booking.booking_reference}
                   </td>
 
                   <td className="px-5 py-3">
                     <div className="flex items-center gap-2">
                       <span
                         className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold text-white ${getAvatarColor(
-                          booking.customerName,
+                          booking.customer.first_name,
                         )}`}
                       >
-                        {getInitials(booking.customerName)}
+                        {getInitials(booking.customer.first_name)}
                       </span>
-                      <span className="font-medium text-slate-900">
-                        {booking.customerName}
+                      <span className="font-medium text-slate-900 flex gap-1">
+                        {booking.customer.first_name}
+                        {booking.customer.last_name}
                       </span>
                     </div>
                   </td>
 
                   <td className="px-5 py-3">
                     <div className="flex items-center gap-2 text-slate-600">
-                      <ServiceIcon
+                      <Hotel
                         size={28}
                         className="text-orange-400 bg-orange-100 p-1.5 rounded-md"
                       />
-                      {booking.service}
+                      {booking.room_type}
                     </div>
                   </td>
 
                   <td className="px-5 py-3 text-slate-500">
-                    {formatDate(booking.date)}
+                    {formatDate(booking.created_at)}
                   </td>
 
                   <td className="px-5 py-3 flex items-center justify-center">
-                    <StatusBadgeButton status={booking.status} />
+                    <StatusBadgeButton status={booking.booking_status} />
                   </td>
 
                   <td className="px-5 py-3 font-medium text-slate-900 ">
-                    {booking.amount.toLocaleString("en-US")}
+                    {booking.payment.amount.toLocaleString("en-US")}
                   </td>
 
                   <td className="px-5 py-3">
                     <div className="flex items-center  gap-1.5 text-slate-500 p-2 bg-gray-50 rounded-md">
                       <PaymentIcon size={14} />
-                      {booking.paymentMethod}
+                      {booking.payment.payment_method}
                     </div>
                   </td>
 

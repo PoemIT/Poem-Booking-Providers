@@ -1,10 +1,3 @@
-// lib/calendar.ts
-//
-// Generates a proper Monday-first calendar grid for any month — figures
-// out how many blank/grayed-out days from the previous and next month
-// are needed to fill a complete grid of weeks, so the calendar always
-// lines up correctly no matter what day of the week the month starts on.
-
 export type CalendarCell = {
   date: number;
   isCurrentMonth: boolean;

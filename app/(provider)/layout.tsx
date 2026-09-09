@@ -4,12 +4,14 @@ import type { ProviderType } from "@/lib/navconfig";
 
 const mockProvider: {
   name: string;
+  hotel: string;
   role: string;
   provider_type: ProviderType;
 } = {
   name: "John Doe",
+  hotel: "Long Bridge Hotel",
   role: "provider",
-  provider_type: "hotel", // change this to "apartment" | "bus" | "restaurant" to test other sidebars
+  provider_type: "apartment",
 };
 
 export default function ProviderLayout({
@@ -17,14 +19,14 @@ export default function ProviderLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const provider = mockProvider; // later: const provider = await getProviderFromSession();
+  const provider = mockProvider;
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen text-black">
       <Sidebar providerType={provider.provider_type} />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header
-          breadcrumb={["Home", "Provider Dashboard"]}
+          breadcrumb={["Home", provider.hotel]}
           userName={provider.name}
           userRole={provider.role}
         />

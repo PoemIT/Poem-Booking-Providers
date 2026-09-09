@@ -15,10 +15,6 @@ type SidebarProps = {
   providerType: ProviderType; // "hotel" | "apartment" | "bus" — comes from whoever is logged in
 };
 
-// Every route now lives under /hotel/..., /apartment/..., etc.
-// navConfig.ts keeps its hrefs simple (e.g. "/dashboard"), and THIS
-// function is the one place that adds the provider-type prefix on top
-// of it (e.g. "/dashboard" -> "/hotel/dashboard").
 function withProviderPrefix(
   providerType: ProviderType,
   items: NavItem[],
@@ -46,7 +42,7 @@ export function Sidebar({ providerType }: SidebarProps) {
   }
 
   return (
-    <div className="flex h-screen w-60 flex-col justify-between bg-slate-900 py-6 text-slate-400">
+    <div className="flex h-screen w-60 flex-col justify-between bg-slate-900 py-6 text-slate-400 overflow-auto">
       <nav>
         <div className="mb-2 flex items-center gap-2 px-5 pb-6">
           <span className="h-5 w-5 rounded-md bg-orange-500" />

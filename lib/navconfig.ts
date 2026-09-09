@@ -20,6 +20,7 @@ export const homeLink: NavItem[] = [
 export const businessSection: NavItem[] = [
   { label: "Profile", href: "/profile", icon: "Users" },
   { label: "Verification", href: "/verification", icon: "ShieldCheck" },
+  { label: "Staff Management", href: "/staffs", icon: "Users" },
 ];
 
 export const typeSection: Record<
@@ -29,9 +30,11 @@ export const typeSection: Record<
   hotel: {
     label: "HOTELS",
     items: [
-      { label: "Rooms", href: "/rooms", icon: "BedDouble" },
-      { label: "Add Room", href: "/rooms/new", icon: "Plus" },
-      { label: "Availability", href: "/availability", icon: "House" },
+      { label: "Room Type", href: "/roomtypes", icon: "BedDouble" },
+      { label: "Add Room Type", href: "/roomtypes/new", icon: "Plus" },
+      /* { label: "Hotels", href: "/hotels", icon: "House" },
+      { label: "Room Types", href: "/roomtypes", icon: "Home" },
+      { label: "Availability", href: "/availability", icon: "House" }, */
     ],
   },
   apartment: {
@@ -63,7 +66,6 @@ export const bookingsSection: NavItem[] = [
 // Section 4: FINANCE — same for every provider type.
 export const financeSection: NavItem[] = [
   { label: "Revenue", href: "/revenue", icon: "DollarSign" },
-  { label: "Withdrawals", href: "/withdrawals", icon: "CreditCard" },
   { label: "Refunds", href: "/refunds", icon: "Undo2" },
   { label: "Reviews", href: "/reviews", icon: "Star" },
   { label: "Settings", href: "/settings", icon: "Settings" },

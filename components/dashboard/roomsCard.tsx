@@ -1,6 +1,6 @@
 // components/roomsCard.tsx
 //
-// Room Management page: 4 simple stat boxes, then the rooms table.
+// Room Management page: 4 simple stat boxes, then the room types table.
 // Filter/Export/pagination buttons are visual only for now — no real
 // filtering or page-switching logic yet, since there's no backend.
 
@@ -14,29 +14,32 @@ import {
   Plus,
   Filter,
   Download,
-  EyeIcon,
-  Edit2Icon,
-  Trash2Icon,
+  Eye,
+  Edit2,
+  Trash2,
+  DoorOpen,
 } from "lucide-react";
-import { mockRoomStats, mockRooms } from "@/lib/mock-data";
-import { formatCurrency } from "@/lib/format";
-import type { RoomStatus } from "@/lib/types";
+import { mockRoomStats, mockRoomTypes } from "@/lib/mock-data";
+import { formatCurrency, formatDate } from "@/lib/format";
+import type { RoomTypeStatus } from "@/lib/mock-data";
 import { Card } from "../providerui/card";
 import Link from "next/link";
 
-const statusStyles: Record<RoomStatus, string> = {
+// Room TYPE statuses are only "active" | "inactive" — a different, smaller
+// set than the general RoomStatus enum ("maintenance" doesn't apply to a
+// category, only to a physical room), so this gets its own small badge
+// instead of reusing that one.
+const statusStyles: Record<RoomTypeStatus, string> = {
   active: "bg-green-50 text-green-700",
-  maintenance: "bg-amber-50 text-amber-700",
-  inactive: "bg-red-50 text-red-700",
+  inactive: "bg-slate-100 text-slate-500",
 };
 
-const statusLabels: Record<RoomStatus, string> = {
+const statusLabels: Record<RoomTypeStatus, string> = {
   active: "Active",
-  maintenance: "Maintenance",
   inactive: "Inactive",
 };
 
-function RoomStatusBadge({ status }: { status: RoomStatus }) {
+function RoomTypeStatusBadge({ status }: { status: RoomTypeStatus }) {
   return (
     <span
       className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${statusStyles[status]}`}
@@ -53,15 +56,15 @@ function RoomsEmptyState() {
         <BedDouble size={22} />
       </div>
       <h3 className="mb-1 text-sm font-semibold text-slate-900">
-        No rooms yet
+        No room types yet
       </h3>
       <p className="mb-5 text-sm text-slate-500">
-        Start by adding your first room to begin accepting bookings.
+        Start by adding your first room type to begin accepting bookings.
       </p>
       <Link href="/hotel/rooms/new">
         <button className="flex items-center gap-1.5 rounded-lg bg-orange-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-orange-600">
           <Plus size={16} />
-          Add Room
+          Add Room Type
         </button>
       </Link>
     </div>
@@ -70,28 +73,28 @@ function RoomsEmptyState() {
 
 function RoomsCard() {
   const stats = mockRoomStats;
-  const rooms = mockRooms;
+  const roomTypes = mockRoomTypes;
 
   return (
     <div>
-      {/* Header — stays the same whether rooms exist or not */}
+      {/* Header — stays the same whether room types exist or not */}
       <div className="mb-6 flex items-start justify-between">
         <div>
           <h1 className="text-xl font-bold text-slate-900">Room Management</h1>
           <p className="text-sm text-slate-500">
-            Manage all rooms across your property.
+            Manage all room types across your property.
           </p>
         </div>
         <Link href="/hotel/rooms/new">
           <button className="flex items-center gap-1.5 rounded-lg bg-orange-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-orange-600">
             <Plus size={16} />
-            Add Room
+            Add Room Type
           </button>
         </Link>
       </div>
 
-      {/* EMPTY STATE — replaces everything below the header when there are no rooms */}
-      {rooms.length === 0 ? (
+      {/* EMPTY STATE — replaces everything below the header when there are no room types */}
+      {roomTypes.length === 0 ? (
         <RoomsEmptyState />
       ) : (
         <>
@@ -135,15 +138,15 @@ function RoomsCard() {
             </Card>
           </div>
 
-          {/* All Rooms table */}
+          {/* All Room Types table */}
           <Card className="p-0">
             <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
               <div className="flex items-center gap-2">
                 <h2 className="text-sm font-semibold text-slate-900">
-                  All Rooms
+                  All Room Types
                 </h2>
                 <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500">
-                  {rooms.length} rooms
+                  {roomTypes.length} room types
                 </span>
               </div>
               <div className="flex items-center gap-2">
@@ -161,37 +164,64 @@ function RoomsCard() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-100 text-left text-xs uppercase tracking-wide text-slate-400 bg-slate-100 rounded-md">
-                  <th className="px-5 py-3 font-medium">Room</th>
-                  <th className="px-5 py-3 font-medium">Type</th>
+                  <th className="px-5 py-3 font-medium">Name</th>
+                  <th className="px-5 py-3 font-medium">Date Created</th>
                   <th className="px-5 py-3 font-medium">Price / Night</th>
-                  <th className="px-5 py-3 font-medium">Availability</th>
+                  <th className="px-5 py-3 font-medium">Rooms</th>
                   <th className="px-5 py-3 font-medium">Status</th>
-                  <th className="px-5 py-3 font-medium ">Actions</th>
+                  <th className="px-5 py-3 font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {rooms.map((room) => (
+                {roomTypes.map((roomType) => (
                   <tr
-                    key={room.id}
+                    key={roomType.id}
                     className="border-x border-b border-slate-200 last:border-0 rounded-md"
                   >
-                    <td className="px-5 py-4 font-bold text-slate-900 ">
-                      {room.name}
-                    </td>
-                    <td className="px-5 py-4 text-slate-500">{room.type}</td>
-                    <td className="px-5 py-4 font-bold text-slate-900 ">
-                      {formatCurrency(room.pricePerNight)}
+                    <td className="px-5 py-4 font-bold text-slate-900">
+                      {roomType.name}
                     </td>
                     <td className="px-5 py-4 text-slate-500">
-                      {room.occupied}/{room.totalUnits}
+                      {formatDate(roomType.created_at)}
+                    </td>
+                    <td className="px-5 py-4 font-bold text-slate-900">
+                      {formatCurrency(roomType.base_price, roomType.currency)}
+                    </td>
+
+                    {/* This is the new part — instead of just showing the
+                        count, it's a link into the individual physical
+                        rooms that belong to this room type. */}
+                    <td className="px-5 py-4">
+                      <Link
+                        href={`/hotel/room-types/${roomType.id}/rooms`}
+                        className="flex items-center gap-1.5 text-slate-600 hover:text-orange-600"
+                      >
+                        <DoorOpen size={14} className="text-slate-400" />
+                        {roomType.total_rooms} rooms
+                      </Link>
+                    </td>
+
+                    <td className="px-5 py-4">
+                      <RoomTypeStatusBadge status={roomType.status} />
                     </td>
                     <td className="px-5 py-4">
-                      <RoomStatusBadge status={room.status} />
-                    </td>
-                    <td className="px-5 py-4 text-right text-slate-400 flex gap-2  ">
-                      <EyeIcon size={18} />
-                      <Edit2Icon size={18} />
-                      <Trash2Icon size={18} />
+                      <div className="flex items-center gap-2 text-slate-400">
+                        <Link
+                          href={`/hotel/room-types/${roomType.id}`}
+                          className="hover:text-slate-700"
+                        >
+                          <Eye size={16} />
+                        </Link>
+                        <Link
+                          href={`/hotel/room-types/${roomType.id}/edit`}
+                          className="hover:text-slate-700"
+                        >
+                          <Edit2 size={16} />
+                        </Link>
+                        <button className="hover:text-red-500">
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
